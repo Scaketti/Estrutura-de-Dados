@@ -31,20 +31,32 @@ int main(){
 	printf("atualizaValor-------------------\n");
 	printaLista(L1);
 
+	//INSERE FIM LISTA
 	L2 = insereFimListaSimples(&L1, 3, 3);
 	L2 = insereFimListaSimples(&L1, 4, 4);
 	printf("\nInsere FIMLISTA---------------\n");
 	printaLista(L1);
 
-	//REMOVE NO
+	//L2 = copiaListas(L1);
+	//printf("\nCopiaListas-------------------\n");
+	//printaLista(L2);
+
+	//transplantaNo(&L1, &L2);
+	//printf("\ntransplantaNo------------------\n");
+	//printaLista(L1);
+	//printaLista(L2);
+
+	//REMOVE PRIMEIRO NO
 	removePrimeiroNo(&L1);
-	printf("Remove PrimeiNó-----------------\n");
+	printf("\nRemove PrimeiNó---------------\n");
 	printaLista(L1);
 
+	//REMOVE ULTIMO NO
 	printf("\nRemove UltimoNó---------------\n");
 	removeUltimoNo(&L1);
 	printaLista(L1);
 
+	//LIBERA TODOS OS NOS
 	printf("\nLiberaNó----------------------\n");
 	liberaNos(&L1);
 	printaLista(L1);
