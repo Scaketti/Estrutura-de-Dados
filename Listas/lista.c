@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 TipoListaSimples *insereInicioListaSimples(TipoListaSimples **prim, TipoChave chave, TipoValor valor){
 
@@ -22,6 +23,8 @@ TipoListaSimples *insereInicioListaSimples(TipoListaSimples **prim, TipoChave ch
 			*prim = aux;
 		}
 	}else return NULL;
+
+	return aux;
 }
 
 void atualizaValor(TipoListaSimples *prim, TipoValor novoValor){
@@ -120,119 +123,157 @@ void removeUltimoNo(TipoListaSimples **prim){
 }
 
 void printaLista(TipoListaSimples *prim){
-
-	TipoListaSimples *aux = prim;
-
-	if(aux == NULL){
+	if(prim == NULL){
 		printf("Lista Vazia!\n");
 	}
 
-	while(aux != NULL){
-		printf("Chave: %d\tValor:%d\n", aux->chave, aux->valor);
-		aux = aux->prox;
+	while(prim != NULL){
+		printf("Chave: %d\tValor:%d\n", prim->chave, prim->valor);
+		prim = prim->prox;
 	}
 }
 
 //INACABADO
 void removeNo(TipoListaSimples *prim, TipoChave chave){
 
-	if(prim == NULL){
-		return;
-	}
-	else{
-		do{
-			if(prim->chave == chave){
+	if(prim == NULL) printf("Lista Vazia!\n");
+	TipoListaSimples *ant = NULL;
 
-			}
-			else{
-				prim = prim->prox;
-			}
-
-		}while(prim != NULL);
+	while(prim->prox != NULL){
+		if(prim->chave == chave){
+			ant->prox = prim->prox;
+		}
+		ant = prim;
+		prim = prim->prox;
 	}
-	printf("Não existe a chave na lista!\n");
+	free(prim);
 }
 
 void liberaNos(TipoListaSimples **prim){
 	assert(prim);
 
-	TipoListaSimples *auxAnt = *prim;
+	TipoListaSimples *auxAnt = NULL;
 	TipoListaSimples *auxAtual = *prim;
 
 	if(auxAtual != NULL){
-		do{
+		while(auxAtual->prox != NULL){
 			auxAnt = auxAtual;
 			auxAtual = auxAtual->prox;
 			free(auxAnt);
-		}while(auxAtual->prox != NULL);
-
+		}
 		free(auxAtual);
 		*prim = NULL;
 	}
 }
 
-//INACABADO
 TipoListaSimples *copiaListas(TipoListaSimples *prim){
 	TipoListaSimples *ponteiroPrim = NULL;
 	TipoListaSimples *ponteiroAtual = NULL;
 
 	ponteiroAtual = (TipoListaSimples *) malloc(sizeof(TipoListaSimples));
-	ponteiroAtual->chave = prim->chave;
-	ponteiroAtual->valor = prim->valor;
+	memcpy(ponteiroAtual, prim, sizeof(TipoListaSimples));
 	ponteiroAtual->prox = NULL;
 	ponteiroPrim = ponteiroAtual;
 
-	do{
+	prim = prim->prox;
+
+	while(prim != NULL){
 		ponteiroAtual->prox = (TipoListaSimples *) malloc(sizeof(TipoListaSimples));
-		ponteiroAtual->chave = prim->chave;
-		ponteiroAtual->valor = prim->valor;
-		ponteiroAtual->prox = NULL;
 		ponteiroAtual = ponteiroAtual->prox;
+		memcpy(ponteiroAtual, prim, sizeof(TipoListaSimples));
+		ponteiroAtual->prox = NULL;
 
 		prim = prim->prox;
 
-	}while(prim != NULL);
+	}
 
 	return ponteiroPrim;
 }
 
-//INACABADO
 TipoListaSimples *intersecaoListas(TipoListaSimples *prim1, TipoListaSimples *prim2){
+
+	int qtdNos = 1;
+	TipoListaSimples *novaLista = NULL;
+	TipoListaSimples *novaPrim = NULL;
+	TipoListaSimples *auxPrim2 = prim2;
+
+	if(prim1 == NULL)return NULL;
+
+	while(prim1 != NULL){
+		while(prim2 != NULL){
+			if((prim1->valor == prim2->valor)){
+				if(qtdNos == 1){
+					novaLista = (TipoListaSimples *) malloc(sizeof(TipoListaSimples));
+					novaPrim = novaLista;
+					novaLista->valor = prim1->valor;
+					novaLista->chave = qtdNos++;
+					novaLista->prox = NULL;
+				}else{
+					novaLista->prox = (TipoListaSimples *) malloc(sizeof(TipoListaSimples));
+					novaLista = novaLista->prox;
+					novaLista->valor = prim1->valor;
+					novaLista->chave = qtdNos++;
+					novaLista->prox = NULL;
+				}
+			}
+			prim2 = prim2->prox;
+		}
+		prim1 = prim1->prox;
+		prim2 = auxPrim2;
+	}
+	return novaPrim;
 }
 
-//INACABADO
 void insereRemove(TipoListaSimples **primLista1, TipoListaSimples **primLista2){
+
+	assert(primLista1);
+	assert(primLista2);
+
+	TipoListaSimples *aux1 = *primLista1;
+	TipoListaSimples *ant2 = NULL;
+	TipoListaSimples *atual2 = *primLista2;
+
+	if(*primLista2 == NULL) return;
+
+
+	while(aux1->prox != NULL){
+		aux1 = aux1->prox;
+	}
+	while(atual2->prox != NULL){
+		ant2 = atual2;
+		atual2 = atual2->prox;
+	}
+
+	aux1->prox = (TipoListaSimples *) malloc(sizeof(TipoListaSimples));
+	memcpy(aux1->prox, atual2, sizeof(TipoListaSimples));
+	(aux1->prox)->prox = NULL;
+
+	if(*primLista1 == NULL) *primLista1 = aux1->prox;
+
+	free(atual2);
+	ant2->prox = NULL;
 }
 
-//INACABADO
 void transplantaNo(TipoListaSimples **primLista1, TipoListaSimples **primLista2){
 	assert(primLista1);
 	assert(primLista2);
 
-	TipoListaSimples *aux1Ant = NULL;
-	TipoListaSimples *aux1Atual = *primLista1;
-	TipoListaSimples *aux2 = *primLista2;
+	TipoListaSimples *antPrim = *primLista1;
+	TipoListaSimples *atualPrim1 = *primLista1;
 
-	if(aux1Atual != NULL){
-		do{
-			aux1Ant = aux1Atual;
-			aux1Atual = aux1Atual->prox;
-		}while(aux1Atual->prox != NULL);
+	TipoListaSimples *atualPrim2 = *primLista2;
 
-		if(aux2 != NULL){
-			do{
-				aux2 = aux2->prox;
-			}while(aux2->prox != NULL);
-			aux2->prox = aux1Ant->prox;
-		}else{
-			aux2 = aux1Ant->prox;
-		}
-	}else{
-		printf("Não existe nos na primeira lista!\n");
+	if(*primLista1 == NULL){
+		printf("Não existe nós.\n");
 		return;
 	}
-
-	
-	free(aux1Atual);
-	aux1Ant->prox = NULL;
+	while(atualPrim1->prox != NULL){
+		antPrim = atualPrim1;
+		atualPrim1 = atualPrim1->prox;
+	}
+	while(atualPrim2->prox != NULL){
+		atualPrim2 = atualPrim2->prox;
+	}
+	atualPrim2->prox = atualPrim1;
+	antPrim->prox = NULL;
 }

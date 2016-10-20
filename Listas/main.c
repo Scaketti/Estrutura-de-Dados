@@ -5,9 +5,12 @@
 int main(){
 
 	TipoListaSimples *L1 = NULL;
+	TipoListaSimples *L2 = NULL;
+	TipoListaSimples *L3 = NULL;
 
 	//Pesquisa No LISTA VAZIA
-	TipoListaSimples *L2 = pesquisaNo(L1, 2);
+	L2 = pesquisaNo(L1, 2);
+	L2 = pesquisaNo(L1, 8);
 	printf("pesquisaNo----------------------\nPesquisa: %p\n\n", L2);
 
 	//INSERE INICIO: LISTA VAZIA
@@ -27,7 +30,7 @@ int main(){
 	printf("Pesquisa: %p\n\n", L2);
 
 	//ATUALIZA VALOR
-	atualizaValor(L1, 3);
+	atualizaValor(L1, 5);
 	printf("atualizaValor-------------------\n");
 	printaLista(L1);
 
@@ -37,14 +40,28 @@ int main(){
 	printf("\nInsere FIMLISTA---------------\n");
 	printaLista(L1);
 
-	//L2 = copiaListas(L1);
-	//printf("\nCopiaListas-------------------\n");
-	//printaLista(L2);
+	L2 = copiaListas(L1);
+	printf("\nCopiaListas-------------------\n");
+	printaLista(L2);
 
-	//transplantaNo(&L1, &L2);
-	//printf("\ntransplantaNo------------------\n");
-	//printaLista(L1);
-	//printaLista(L2);
+	liberaNos(&L2);
+	//insereInicioListaSimples(&L2, 1, 4);
+	//insereInicioListaSimples(&L2, 2, 3);
+	insereInicioListaSimples(&L2, 3, 1);
+	insereInicioListaSimples(&L2, 4, 8);
+	insereInicioListaSimples(&L2, 5, 5);
+	printf("\nInserindoL2-------------------\n");
+	printaLista(L2);
+
+	printf("\nInterseçãoListas--------------\n");
+	L3 = intersecaoListas(L1, L2);
+	printaLista(L3);
+
+	transplantaNo(&L1, &L2);
+	printf("\ntransplantaNo-----------------\n");
+	printaLista(L1);
+	printf("\n------------------------------\n");
+	printaLista(L2);
 
 	//REMOVE PRIMEIRO NO
 	removePrimeiroNo(&L1);
@@ -56,10 +73,19 @@ int main(){
 	removeUltimoNo(&L1);
 	printaLista(L1);
 
+	//Remove\insere
+	printf("\nRemove/insereL1-----------------\n");
+	insereRemove(&L1, &L3);
+	printaLista(L1);
+	printf("\nRemove/insereL3-----------------\n");
+	printaLista(L3);
+
 	//LIBERA TODOS OS NOS
 	printf("\nLiberaNó----------------------\n");
-	liberaNos(&L1);
-	printaLista(L1);
+	liberaNos(&L3);
+	printaLista(L3);
+
+	
 	
 	return 0;
 }
