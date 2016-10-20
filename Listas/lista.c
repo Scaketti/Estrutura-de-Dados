@@ -108,16 +108,19 @@ void removeUltimoNo(TipoListaSimples **prim){
 	TipoListaSimples *auxAnt = NULL;
 	TipoListaSimples *auxAtual = *prim;
 
-	if(auxAtual == NULL){
-		return;
-	}
+	if(auxAtual == NULL) return;
 	else{
-		do{
+		while(auxAtual->prox != NULL){
 			auxAnt = auxAtual;
 			auxAtual = auxAtual->prox;
-		}while(auxAtual->prox != NULL);
+		}
+		if(auxAnt != NULL){
+			auxAnt->prox = NULL;
 
-		auxAnt->prox = NULL;
+		}else{
+			*prim = NULL;
+		}
+
 		free(auxAtual);
 	}
 }
@@ -201,7 +204,7 @@ TipoListaSimples *intersecaoListas(TipoListaSimples *prim1, TipoListaSimples *pr
 
 	while(prim1 != NULL){
 		while(prim2 != NULL){
-			if((prim1->valor == prim2->valor)){
+			if((prim1->chave == prim2->chave)){
 				if(qtdNos == 1){
 					novaLista = (TipoListaSimples *) malloc(sizeof(TipoListaSimples));
 					novaPrim = novaLista;
