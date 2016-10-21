@@ -137,19 +137,37 @@ void printaLista(TipoListaSimples *prim){
 }
 
 //INACABADO
-void removeNo(TipoListaSimples *prim, TipoChave chave){
+void removeNo(TipoListaSimples **prim, TipoChave chave){
 
-	if(prim == NULL) printf("Lista Vazia!\n");
+	if(prim == NULL){
+		printf("Lista Vazia!\n");
+		return;
+	}
+
+	TipoListaSimples *aux = *prim;
+
 	TipoListaSimples *ant = NULL;
 
-	while(prim->prox != NULL){
-		if(prim->chave == chave){
-			ant->prox = prim->prox;
-		}
-		ant = prim;
-		prim = prim->prox;
+	if(aux -> chave == chave){
+		*prim = aux -> prox;
+		free(aux);
+		return;
 	}
-	free(prim);
+
+	while(aux != NULL){
+		if(aux->chave == chave){
+			//ant->prox = aux->prox;
+			break;
+		}
+		ant = aux;
+		aux = aux->prox;
+	}
+ 
+	if(aux != NULL){
+		ant -> prox = aux -> prox;
+		free(aux);
+	}
+
 }
 
 void liberaNos(TipoListaSimples **prim){

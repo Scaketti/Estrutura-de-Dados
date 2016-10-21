@@ -66,7 +66,7 @@ void removeUltimoNo(TipoListaSimples **prim);
  * Remove nó cujo valor chave seja igual a 'chave'
  * Mantêm lista inalterada caso este não exista.
  */
-void removeNo(TipoListaSimples *prim, TipoChave chave);
+void removeNo(TipoListaSimples **prim, TipoChave chave);
 
 
 /* -------------------------> Remove todos nós

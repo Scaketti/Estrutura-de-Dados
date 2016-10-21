@@ -87,10 +87,14 @@ int main(){
 	printaLista(L3);
 
 	//LIBERA TODOS OS NOS
-	printf("\nLiberaNó----------------------\n");
+	printf("\nLiberaNó------------------------\n");
 	liberaNos(&L3);
 	printaLista(L3);
 
+
+	printf("\nRemoveNoPorChave----------------\n");
+	removeNo(&L1, 2);
+	printaLista(L1);
 	
 	
 	return 0;
